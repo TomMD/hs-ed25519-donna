@@ -1,0 +1,3 @@
+[submodule "upstream-c"]
+	path = upstream-c
+	url = git@github.com:floodyberry/ed25519-donna.git
