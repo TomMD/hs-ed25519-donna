@@ -1,12 +1,15 @@
 module Crypto.Ed25519.Pure (
-             PrivateKey(..)
-           , PublicKey(..)
+             PrivateKey
+           , PublicKey
            , Signature(..)
            , generatePrivate
            , generatePublic
            , generateKeyPair
            , sign, valid
            -- , makeShared
+           -- * Import/Export interface
+           , importPublic, importPrivate
+           , exportPublic, exportPrivate
            ) where
 
 import Crypto.Random
@@ -85,7 +88,9 @@ ed25519_sign_open :: ByteString -- ^ Message
                   -> PublicKey
                   -> Signature
                   -> Bool
-ed25519_sign_open bs (Pub p) (Sig s) = unsafePerformIO $ do
+ed25519_sign_open bs (Pub p) (Sig s)
+    | B.length s /= 64 = False
+    | otherwise = unsafePerformIO $ do
     BU.unsafeUseAsCStringLen bs $ \(mp,mlen) -> BU.unsafeUseAsCString p $ \pp -> BU.unsafeUseAsCString s $ \sp ->
         return (0 == ed25519_sign_open_c mp (fromIntegral mlen) pp sp)
 
@@ -98,6 +103,20 @@ curve25519_scalarmult_basepoint (Priv q) = Pub $ unsafePerformIO $ do
 -- curve25519_scalarmult :: PublicKey -> PrivateKey -> ByteString
 -- curve25519_scalarmult (Pub p) (Priv q) = unsafePeformIO $ do
 --     BU.unsafeUseAsCString q $ \qp -> BU.unsafeUseAsCString p $ \pp -> createByteString multSize $ curved25519_scalarmult_c qp pp
+
+importPublic :: ByteString -> Maybe PublicKey
+importPublic bs | B.length bs == 32 = Just (Pub bs)
+                | otherwise         = Nothing
+
+exportPublic :: PublicKey -> ByteString
+exportPublic (Pub bs) = bs
+
+importPrivate :: ByteString -> Maybe PrivateKey
+importPrivate bs | B.length bs == 32 = Just (Priv bs)
+                 | otherwise         = Nothing
+
+exportPrivate :: PrivateKey -> ByteString
+exportPrivate (Priv bs) = bs
 
 --------------------------------------------------------------------------------
 --  C Bindings

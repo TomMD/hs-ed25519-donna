@@ -1,11 +1,14 @@
 module Crypto.Ed25519.Exceptions (
-                PrivateKey(..)
-              , PublicKey(..)
+                PrivateKey
+              , PublicKey
               , Signature(..)
               , generatePrivate
               , generatePublic
               , generateKeyPair
               , sign, valid
+              -- * Import/Export interface
+              , Pure.importPublic, Pure.importPrivate
+              , Pure.exportPublic, Pure.exportPrivate
               ) where
 
 import Data.ByteString(ByteString)
