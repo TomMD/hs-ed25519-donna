@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                ed25519-donna
-version:             0.1
+version:             0.1.1
 synopsis:            Haskell bindings to ed25519-donna (Elliptical Curve Signature Scheme)
 -- description:         
 homepage:            github.com/tommd/hs-ed25519-donna
@@ -42,7 +42,7 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Crypto.Ed25519, Crypto.Ed25519.Pure, Crypto.Ed25519.Exceptions
-  build-depends:       base >=4.7 && <4.8, bytestring, crypto-api
+  build-depends:       base >=4.7 && <5, bytestring, crypto-api
   default-language:    Haskell2010
   include-dirs:        upstream-c, cbits
   c-sources:           upstream-c/ed25519.c
