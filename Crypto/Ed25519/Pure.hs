@@ -1,3 +1,5 @@
+{-#LANGUAGE GeneralizedNewtypeDeriving#-}
+
 module Crypto.Ed25519.Pure (
              PrivateKey
            , PublicKey
