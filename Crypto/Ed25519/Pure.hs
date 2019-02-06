@@ -20,17 +20,18 @@ import Foreign.C.Types
 import Foreign.Ptr
 import Foreign.Marshal.Alloc (allocaBytes)
 import System.IO.Unsafe (unsafePerformIO)
+import Control.DeepSeq (NFData)
 
 -- |The type of a Ed25519 private key.
 newtype PrivateKey = Priv ByteString
-            deriving (Show)
+            deriving (Show, NFData)
 
 -- |The type of a Ed25519 public key.
 newtype PublicKey  = Pub ByteString
-            deriving (Show)
+            deriving (Show, NFData)
 
 newtype Signature  = Sig ByteString
-            deriving (Show)
+            deriving (Show, NFData)
 
 -- Randomly generate an Ed25519 private key
 generatePrivate :: CryptoRandomGen g => g -> Either GenError (PrivateKey, g)
